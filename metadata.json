@@ -1,0 +1,6 @@
+{
+  "name": "TrustCast",
+  "description": "High-security online voting platform with 2FA authentication, decoupled anonymous ballot ledger, atomic double-vote prevention, cryptographic vote receipts, and real-time Chart.js analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

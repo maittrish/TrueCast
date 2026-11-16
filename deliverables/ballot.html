@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+  <title>TrustCast — Secret Ballot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="tc-header">
+    <a class="tc-brand" href="index.html">TrustCast</a>
+    <nav class="tc-nav" aria-label="Primary Navigation">
+      <a href="index.html">Voter Portal</a>
+      <a href="ballot.html" class="active">Cast Ballot</a>
+      <a href="dashboard.html">Live Analytics</a>
+    </nav>
+    <div id="session-countdown" class="mono" style="font-size: 0.9rem; color: #38bdf8;">
+      Session: 03:00
+    </div>
+  </header>
+
+  <main class="tc-container">
+    <section id="ballot-stage" class="glass-panel">
+      <p class="kicker">Official Secret Ballot · Select One Candidate · Single-Use Session</p>
+      <h1 style="font-size: 1.85rem; margin-bottom: 0.5rem;">2026 Civic General Council Election</h1>
+      <p style="color: var(--text-secondary); margin-bottom: 1.75rem;">
+        Choose one candidate below. You will be asked to explicitly confirm your selection before the ballot is sealed into the anonymous ledger.
+      </p>
+
+      <div id="candidate-list" class="grid-2" role="radiogroup" aria-label="Candidates"></div>
+
+      <div id="ballot-feedback" role="status" aria-live="polite"></div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-hairline);">
+        <button id="review-ballot-btn" type="button" class="btn btn-primary" disabled>
+          Review &amp; Confirm Selection
+        </button>
+      </div>
+    </section>
+
+    <!-- Cryptographic Receipt Stage (shown after commit & session destruction) -->
+    <section id="receipt-stage" class="glass-panel" style="display: none;">
+      <p class="kicker">Ballot Sealed · Session Destroyed · Storage Cleared</p>
+      <h1 style="font-size: 1.85rem; margin-bottom: 0.75rem;">Cryptographic Vote Receipt</h1>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Your ballot has been committed to the anonymous ledger and your authentication session has been permanently terminated. Save this SHA-256 receipt to verify ledger inclusion on the public dashboard—it reveals nothing about your choice.
+      </p>
+
+      <div style="padding: 1.25rem; border: 1px solid var(--border-hairline); border-radius: var(--radius-md); background: rgba(9, 14, 26, 0.75);">
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.4rem;">SHA-256 Ballot Inclusion Hash</div>
+        <div id="receipt-hash-display" class="mono" style="word-break: break-all; font-size: 0.95rem; color: #38bdf8;"></div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.65rem;">
+          Quantized Commit Window (UTC): <span id="receipt-bucket-display" class="mono"></span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap;">
+        <button id="copy-receipt-btn" type="button" class="btn btn-secondary">Copy Receipt Hash</button>
+        <a href="dashboard.html" class="btn btn-primary">Verify on Live Analytics</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Explicit Confirmation Modal -->
+  <div id="confirm-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="glass-panel modal-card">
+      <h2 id="confirm-title" style="font-size: 1.3rem; margin-bottom: 0.6rem;">Confirm Final Ballot Submission</h2>
+      <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 1rem;">
+        You are about to cast an irreversible, anonymous ballot for:
+      </p>
+      <div style="padding: 1rem; border: 1px solid var(--border-hairline); border-radius: var(--radius-md); margin-bottom: 1rem; background: rgba(9, 14, 26, 0.65);">
+        <strong id="confirm-candidate-name" style="display: block; font-size: 1.05rem;"></strong>
+        <span id="confirm-candidate-coalition" style="font-size: 0.85rem; color: var(--text-secondary);"></span>
+      </div>
+      <label style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1.25rem; cursor: pointer;">
+        <input id="confirm-checkbox" type="checkbox" style="margin-top: 0.25rem;" />
+        <span>I understand that once submitted, my ballot cannot be changed and my session will terminate immediately.</span>
+      </label>
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button id="cancel-confirm-btn" type="button" class="btn btn-secondary">Go Back</button>
+        <button id="submit-vote-btn" type="button" class="btn btn-primary" disabled>Cast Secret Ballot</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="ballot.js"></script>
+</body>
+</html>

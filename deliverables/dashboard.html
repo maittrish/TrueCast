@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrustCast — Real-Time Analytics Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="tc-header">
+    <a class="tc-brand" href="index.html">TrustCast</a>
+    <nav class="tc-nav" aria-label="Primary Navigation">
+      <a href="index.html">Voter Portal</a>
+      <a href="ballot.html">Cast Ballot</a>
+      <a href="dashboard.html" class="active">Live Analytics</a>
+    </nav>
+    <button id="toggle-poll-btn" type="button" class="btn btn-secondary">Pause Live Poll</button>
+  </header>
+
+  <main class="tc-container">
+    <div style="margin-bottom: 1.5rem;">
+      <p class="kicker">Live Polling Interval: 3s · Zero Voter-Ballot Linkage · Updated <span id="last-updated" class="mono">--:--:--</span> UTC</p>
+      <h1 style="font-size: 1.9rem;">Election Telemetry &amp; Demographic Turnout</h1>
+    </div>
+
+    <section class="grid-3" style="margin-bottom: 1.5rem;">
+      <div class="glass-panel">
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">Total Cast Ballots</div>
+        <div id="kpi-cast" class="mono" style="font-size: 2rem; font-weight: 700; margin-top: 0.25rem;">0</div>
+      </div>
+      <div class="glass-panel">
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">Registered Electorate</div>
+        <div id="kpi-registered" class="mono" style="font-size: 2rem; font-weight: 700; margin-top: 0.25rem;">0</div>
+      </div>
+      <div class="glass-panel">
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">Aggregate Turnout</div>
+        <div id="kpi-turnout" class="mono" style="font-size: 2rem; font-weight: 700; margin-top: 0.25rem;">0.0%</div>
+      </div>
+    </section>
+
+    <section class="grid-2" style="margin-bottom: 1.5rem;">
+      <div class="glass-panel">
+        <h2 style="font-size: 1.15rem; margin-bottom: 1rem;">Candidate Standings</h2>
+        <div style="height: 290px;">
+          <canvas id="standings-chart"></canvas>
+        </div>
+      </div>
+      <div class="glass-panel">
+        <h2 style="font-size: 1.15rem; margin-bottom: 1rem;">Demographic Turnout by Age Group</h2>
+        <div style="height: 290px;">
+          <canvas id="demographics-chart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="glass-panel">
+      <h2 style="font-size: 1.15rem; margin-bottom: 0.4rem;">Cryptographic Receipt Inclusion Verifier</h2>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+        Paste your 64-character SHA-256 ballot receipt to confirm inclusion in the public ledger without revealing candidate selection.
+      </p>
+      <form id="verify-receipt-form" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <input
+          id="receipt-input"
+          class="field-input mono"
+          style="flex: 1; min-width: 260px;"
+          type="text"
+          placeholder="64-character hexadecimal SHA-256 receipt hash"
+          maxlength="64"
+          required
+        />
+        <button type="submit" class="btn btn-primary">Verify Inclusion</button>
+      </form>
+      <div id="receipt-verify-result" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

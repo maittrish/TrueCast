@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrustCast — Voter 2FA Authentication</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="tc-header">
+    <a class="tc-brand" href="index.html">TrustCast</a>
+    <nav class="tc-nav" aria-label="Primary Navigation">
+      <a href="index.html" class="active">Voter Portal</a>
+      <a href="ballot.html">Cast Ballot</a>
+      <a href="dashboard.html">Live Analytics</a>
+    </nav>
+    <a class="btn btn-secondary" href="dashboard.html">Verify Receipt</a>
+  </header>
+
+  <main class="tc-container">
+    <div class="grid-2" style="align-items: start;">
+      <section class="glass-panel">
+        <p class="kicker">2026 Civic General Council · Secret Ballot · 2FA Protected</p>
+        <h1 style="font-size: 2rem; margin-bottom: 0.75rem;">Authenticate Your Voter Identity</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+          Enter your official Voter ID to receive a 120-second one-time passcode. Once verified, a strict 3-minute ballot session opens and automatically terminates upon casting.
+        </p>
+
+        <!-- Step 1: Voter ID -->
+        <form id="voter-id-form" novalidate>
+          <label class="field-label" for="voter-id-input">Official Voter ID</label>
+          <input
+            id="voter-id-input"
+            class="field-input mono"
+            type="text"
+            placeholder="TC-849201"
+            autocomplete="off"
+            required
+            maxlength="16"
+          />
+          <p id="voter-id-hint" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+            Format: 2–4 uppercase letters, hyphen, 6–10 digits (e.g. TC-849201).
+          </p>
+          <div style="margin-top: 1.25rem;">
+            <button id="request-otp-btn" type="submit" class="btn btn-primary" style="width: 100%;">
+              Request 2FA Verification Code
+            </button>
+          </div>
+        </form>
+
+        <!-- Step 2: OTP Challenge -->
+        <form id="otp-form" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-hairline);" novalidate>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span style="font-size: 0.875rem; color: var(--text-secondary);">
+              Code dispatched to <strong id="masked-contact" style="color: var(--text-primary);"></strong>
+            </span>
+            <span id="otp-timer" class="mono" style="font-size: 0.875rem; color: #38bdf8;">02:00</span>
+          </div>
+
+          <label class="field-label" for="otp-input">6-Digit One-Time Passcode</label>
+          <input
+            id="otp-input"
+            class="field-input mono"
+            type="text"
+            inputmode="numeric"
+            placeholder="000000"
+            maxlength="6"
+            autocomplete="one-time-code"
+            required
+          />
+
+          <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+            <button id="verify-otp-btn" type="submit" class="btn btn-primary" style="flex: 1;">
+              Verify &amp; Open Ballot
+            </button>
+            <button id="resend-otp-btn" type="button" class="btn btn-secondary">
+              Resend
+            </button>
+          </div>
+        </form>
+
+        <div id="auth-feedback" role="status" aria-live="polite"></div>
+      </section>
+
+      <aside class="glass-panel">
+        <h2 style="font-size: 1.15rem; margin-bottom: 1rem;">Constitutional Security Guarantees</h2>
+        <div style="display: grid; gap: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+          <div style="padding-bottom: 1rem; border-bottom: 1px solid var(--border-hairline);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Decoupled Ballot Ledger</strong>
+            Identity checks occur strictly against the <span class="mono">voters</span> table. Your selection enters an unlinked <span class="mono">votes</span> table with 15-minute quantized timestamps.
+          </div>
+          <div style="padding-bottom: 1rem; border-bottom: 1px solid var(--border-hairline);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Atomic Concurrency Lock</strong>
+            InnoDB row-level locks (<span class="mono">SELECT ... FOR UPDATE</span>) prevent rapid double-clicks or parallel script submissions from casting duplicate ballots.
+          </div>
+          <div>
+            <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Zero-Residual Device Exit</strong>
+            Your session expires after 180 seconds or immediately upon ballot commit, clearing browser storage and locking back-button navigation.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>
