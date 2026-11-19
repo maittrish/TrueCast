@@ -147,7 +147,7 @@ TrustCast/
 **Maittrish Sen Sharma**  
 B.Tech (2nd Year) — Computer Science and Engineering (Data Science)  
 University of Engineering and Management, Kolkata (UEMK)  
-Academic Session: 2026–2027
+Academic Session: 2025-2029
 
 ---
 
